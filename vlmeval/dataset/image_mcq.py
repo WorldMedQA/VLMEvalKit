@@ -76,6 +76,20 @@ class ImageMCQDataset(ImageBaseDataset):
         # A-Bench
         'A-Bench_VAL': 'https://huggingface.co/datasets/zhangzicheng/abench_tsv/resolve/main/A-bench_VAL.tsv',
         'A-Bench_TEST': 'https://huggingface.co/datasets/zhangzicheng/abench_tsv/resolve/main/A-bench_TEST.tsv',
+        
+        # WorldMultimodalMedQA
+        # WorldMultimodalMedQA EN version
+        'brazil_english': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/brazil_english_processed.tsv',
+        'japan_english': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/japan_english_processed.tsv',
+        'israel_english': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/israel_english_processed.tsv',
+        'spain_english': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/spain_english_processed.tsv',
+        
+        # WorldMultimodalMedQA Local version
+        'brazil_local': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/brazil_local_processed.tsv',
+        'japan_local': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/japan_local_processed.tsv', 
+        'israel_local': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/israel_local_processed.tsv',
+        'spain_local': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/spain_local_processed.tsv', 
+
         # Other Benchmarks
         'CCBench': 'https://opencompass.openxlab.space/utils/VLMEval/CCBench.tsv',
         'AI2D_TEST': 'https://opencompass.openxlab.space/utils/VLMEval/AI2D_TEST.tsv',
@@ -200,7 +214,7 @@ class ImageMCQDataset(ImageBaseDataset):
 
         suffix = eval_file.split('.')[-1]
         model = judge_kwargs.get('model', 'exact_matching')
-        assert model in ['chatgpt-0125', 'exact_matching', 'gpt-4-0125']
+        assert model in ['chatgpt-0125', 'exact_matching', 'gpt-4-0125', 'gpt-4o-mini']
         name_str_map = {'chatgpt-0125': 'openai', 'gpt-4-0125': 'gpt4'}
         name_str = name_str_map[model] if model in name_str_map else model
 
@@ -236,7 +250,15 @@ class ImageMCQDataset(ImageBaseDataset):
         if circular:
             data = mcq_circular_eval(model, data, meta, nproc, result_file, self.dataset_name)
         else:
-            data = mcq_vanilla_eval(model, data, meta, nproc, result_file, self.dataset_name)
+            pass
+            # data = mcq_vanilla_eval(model, data, meta, nproc, result_file, self.dataset_name)
+
+        # line 253 not working, shan chen hot fix this
+        prompt = 'You are an AI assistant who will help me to match an answer with several options of a single-choice question. Please only return the letter of choice A or B or C or D, nothing else please!'
+
+        data['extracted'] = [model.generate(prompt+i)[0] for i in data['prediction']]
+
+        data['hit'] = [int(i==j) for i,j in zip(data['correct_option'], data['extracted'])]
 
         # load split
         dump(data, eval_file.replace(f'.{suffix}', f'_{name_str}_result.{suffix}'))
