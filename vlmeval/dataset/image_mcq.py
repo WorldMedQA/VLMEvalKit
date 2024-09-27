@@ -255,7 +255,13 @@ class ImageMCQDataset(ImageBaseDataset):
         # line 253 not working, shan chen hot fix this
         prompt = 'You are an AI assistant who will help me to match an answer with several options of a single-choice question. Please only return the letter of choice A or B or C or D, nothing else please!'
 
-        data['extracted'] = [model.generate(prompt+i)[0] for i in data['prediction']]
+        temp = []
+        for i in data['prediction']:
+            if len(i) > 2:
+               temp.append(model.generate(prompt+i)[0]) 
+            else:
+                temp.append(i[0])
+        data['extracted'] = temp
 
         data['hit'] = [int(i==j) for i,j in zip(data['correct_option'], data['extracted'])]
 
