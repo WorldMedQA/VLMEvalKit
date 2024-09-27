@@ -252,7 +252,6 @@ class ImageMCQDataset(ImageBaseDataset):
         else:
             pass
             # data = mcq_vanilla_eval(model, data, meta, nproc, result_file, self.dataset_name)
-
         # line 253 not working, shan chen hot fix this
         prompt = 'You are an AI assistant who will help me to match an answer with several options of a single-choice question. Please only return the letter of choice A or B or C or D, nothing else please!'
 
