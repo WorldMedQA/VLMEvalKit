@@ -23,14 +23,6 @@ class llama_vision(BaseModel):
             model_path,
             torch_dtype=torch.bfloat16,
             device_map='auto',
-<<<<<<< HEAD
-        )
-        self.processor = AutoProcessor.from_pretrained(model_path)
-        kwargs_default = dict(do_sample=False, max_new_tokens=512, temperature=0.0, top_p=None, num_beams=1)
-        kwargs.update(kwargs_default)
-        print(f'Following kwargs received: {kwargs}, will use as generation config. ')
-        self.kwargs = kwargs
-=======
         ).eval()
         self.processor = AutoProcessor.from_pretrained(model_path)
         if 'Instruct' in model_path:
@@ -135,7 +127,6 @@ class llama_vision(BaseModel):
         message = [dict(type='text', value=prompt)]
         message.extend([dict(type='image', value=s) for s in tgt_path])
         return message
->>>>>>> 141dc9c40b1f647e433b5a94157e3a54a8416f98
 
     def generate_inner(self, message, dataset=None):
         prompt, image_path = self.message_to_promptimg(message, dataset=dataset)
@@ -149,14 +140,6 @@ class llama_vision(BaseModel):
         ]
         input_text = self.processor.apply_chat_template(messages, add_generation_prompt=True)
         inputs = self.processor(image, input_text, return_tensors='pt').to(self.model.device)
-<<<<<<< HEAD
-        if DATASET_TYPE(dataset) == 'MCQ' or DATASET_TYPE(dataset) == 'Y/N':
-            self.kwargs['max_new_tokens'] = 128
-        else:
-            self.kwargs['max_new_tokens'] = 512
-        output = self.model.generate(**inputs, **self.kwargs)
-        return self.processor.decode(output[0][inputs['input_ids'].shape[1]:]).replace('<|eot_id|>', '')
-=======
         if not self.use_custom_prompt(dataset):
             if DATASET_TYPE(dataset) == 'MCQ' or DATASET_TYPE(dataset) == 'Y/N':
                 self.kwargs['max_new_tokens'] = 128
@@ -164,4 +147,3 @@ class llama_vision(BaseModel):
                 self.kwargs['max_new_tokens'] = 512
         output = self.model.generate(**inputs, **self.kwargs)
         return self.processor.decode(output[0][inputs['input_ids'].shape[1]:]).replace('<|eot_id|>', '')
->>>>>>> 141dc9c40b1f647e433b5a94157e3a54a8416f98

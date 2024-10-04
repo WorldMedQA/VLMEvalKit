@@ -80,13 +80,13 @@ class ImageMCQDataset(ImageBaseDataset):
         # WorldMultimodalMedQA
         # WorldMultimodalMedQA EN version
         'brazil_english': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/maisn/brazil_english_processed.tsv',
-        'japan_english': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/japan_english_processed.tsv',
+        'japan_english': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/japan_english_processed.tsv',
         'israel_english': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/israel_english_processed.tsv',
         'spain_english': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/spain_english_processed.tsv',
         
         # WorldMultimodalMedQA Local version
         'brazil_local': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/brazil_local_processed.tsv',
-        'japan_local': 'https://huggingface.co/datasets/WorldMedQA/v2/resolve/main/japan_local_processed.tsv', 
+        'japan_local': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/japan_local_processed.tsv', 
         'israel_local': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/israel_local_processed.tsv',
         'spain_local': 'https://huggingface.co/datasets/WorldMedQA/v3/resolve/main/spain_local_processed.tsv', 
 
