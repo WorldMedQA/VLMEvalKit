@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# datasets=("japan_local" "japan_english" "spain_local" "spain_english" "israel_local" "israel_english")
-datasets=("japan_local" "japan_english")
-models=("llava_next_vicuna_7b" "llava_next_llama3" "llava_next_mistral_7b" "paligemma-3b-mix-448") #("GPT4o" "GPT4o_MINI" "GeminiFlash1-5" "GeminiPro1-5")
+datasets=("brazil_local" "brazil_english" "japan_local" "japan_english" "spain_local" "spain_english" "israel_local" "israel_english" )
+# datasets=("japan_local" "japan_english")
+models=("llava_next_vicuna_7b" "llava_next_llama3" "llava_next_mistral_7b" "paligemma-3b-mix-448" "GPT4o" "GPT4o_MINI" "GeminiFlash1-5" "GeminiPro1-5")
 
 # Loop over the models
 for model in "${models[@]}"; do
